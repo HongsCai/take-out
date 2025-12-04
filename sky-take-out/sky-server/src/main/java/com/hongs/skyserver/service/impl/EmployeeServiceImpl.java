@@ -12,6 +12,7 @@ import com.hongs.skycommon.pojo.entity.Employee;
 import com.hongs.skyserver.service.EmployeeService;
 import com.hongs.skyserver.mapper.EmployeeMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 /**
 * @author Hongs
@@ -40,9 +41,8 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
             throw new AccountNotFoundException(MessageConstant.ACCOUNT_NOT_FOUND);
         }
 
-        // 密码对比
-        // TODO 后期使用MD5加密，然后再进行比对
-        if (!password.equals(employee.getPassword())) {
+        // 密码对比（进行MD5加密，再比对）
+        if (!DigestUtils.md5DigestAsHex(password.getBytes()).equals(employee.getPassword())) {
             throw new PasswordErrorException(MessageConstant.PASSWORD_ERROR);
         }
 
