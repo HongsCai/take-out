@@ -1,6 +1,7 @@
 package com.hongs.skyserver.interceptor;
 
 import com.hongs.skycommon.constant.JwtClaimsConstant;
+import com.hongs.skycommon.context.BaseContext;
 import com.hongs.skycommon.properties.JwtProperties;
 import com.hongs.skycommon.utils.JwtUtil;
 import io.jsonwebtoken.Claims;
@@ -23,6 +24,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
 
     /**
      * 校验Jwt
+     * 将ID存入ThreadLocal
      *
      * @param request
      * @param response
@@ -30,6 +32,7 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
      * @return
      * @throws Exception
      */
+    @Override
     public boolean preHandle(final HttpServletRequest request, final HttpServletResponse response, final Object handler) throws Exception {
         // 判断当前拦截到的是Controller的方法还是其他资源
         if (!(handler instanceof HandlerMethod)) {
@@ -44,10 +47,25 @@ public class JwtTokenAdminInterceptor implements HandlerInterceptor {
             Claims claims = JwtUtil.parseJWT(jwtProperties.getAdminSecretKey(), token);
             Long empId = Long.valueOf(claims.get(JwtClaimsConstant.EMP_ID).toString());
             log.info("当前员工ID: {}", empId);
+            BaseContext.setCurrentId(empId);
+
             return true;
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return false;
         }
+    }
+
+    /**
+     * 清除ThreadLocal
+     * @param request
+     * @param response
+     * @param handler
+     * @param ex
+     * @throws Exception
+     */
+    @Override
+    public void afterCompletion(final HttpServletRequest request, final HttpServletResponse response, final Object handler, final Exception ex) throws Exception {
+        BaseContext.removeCurrentId();
     }
 }
