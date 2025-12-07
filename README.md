@@ -17,6 +17,7 @@
 | Mysql-Connector-Java | 8.0.30 |
 | druid | 1.2.23 |
 | jjwt | 0.9.1 |
+| jaxb-api | 2.3.1 |
 
 
 
