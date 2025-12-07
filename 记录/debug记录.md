@@ -55,3 +55,35 @@ springboot3.x以上就需要换knife4j依赖为4.x版本的knife4j-openapi3-jaka
 ```
 
 ![image-20251205184952133](./assets/image-20251205184952133.png)
+
+
+
+# 2025年12月7日
+
+## Knife4j的调试接口将请求参数对象识别为了请求体
+
+
+
+```java
+    /**
+     * 员工分页查询
+     * @param pageQueryDTO
+     * @return
+     */
+    @Operation(summary = "员工分页查询")
+    @GetMapping("/page")
+    public Result<PageResult> page(@ParameterObject EmployeePageQueryDTO pageQueryDTO) {
+        log.info("员工分页查询: {}", pageQueryDTO);
+        PageResult pageResult = employeeService.page(pageQueryDTO);
+        return Result.success(pageResult);
+    }
+```
+
+
+
+添加 @ParameterObject 注解，效果达成
+
+
+
+![image-20251207103648832](./assets/image-20251207103648832.png)
+
