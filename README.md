@@ -9,8 +9,8 @@
 | 组件/依赖 (Component) | 版本 (Version) |
 | :--- | :--- |
 | JDK | 17 |
-| SpringBoot3 | 3.2.5 |
-| Knife4j-openapi3 | 4.4.0 |
+| SpringBoot3 | 3.2.12 |
+| Knife4j-openapi3 | 4.5.0 |
 | Mybatis-Plus | 3.5.14 |
 | Mybatis-Plus-Jsqlparser | 3.5.14 |
 | Lombok | 1.18.20 |
