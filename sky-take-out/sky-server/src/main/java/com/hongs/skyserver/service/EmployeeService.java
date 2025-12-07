@@ -3,8 +3,10 @@ package com.hongs.skyserver.service;
 import com.hongs.skycommon.pojo.dto.EmployeeDTO;
 import com.hongs.skycommon.pojo.dto.EmployeeLoginDTO;
 import com.hongs.skycommon.pojo.dto.EmployeePageQueryDTO;
+import com.hongs.skycommon.pojo.dto.EmployeeUpdateInfoDTO;
 import com.hongs.skycommon.pojo.entity.Employee;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hongs.skycommon.pojo.vo.EmployeeGetOneByIdVO;
 import com.hongs.skycommon.pojo.vo.EmployeeLoginVO;
 import com.hongs.skycommon.pojo.vo.EmployeePageQueryVO;
 import com.hongs.skycommon.result.PageResult;
@@ -31,14 +33,36 @@ public interface EmployeeService extends IService<Employee> {
 
     /**
      * 员工分页查询
-     * @param pageQueryDTO
+     * @param employeePageQueryDTO
      * @return
      */
-    PageResult<EmployeePageQueryVO> page(EmployeePageQueryDTO pageQueryDTO);
+    PageResult<EmployeePageQueryVO> page(EmployeePageQueryDTO employeePageQueryDTO);
 
     /**
      * 通用员工信息更新
      * @param employee
      */
     void update(Employee employee);
+
+    /**
+     * 启用禁用员工账号
+     * @param status
+     * @param id
+     * @return
+     */
+    void updateStatus(Integer status, Long id);
+
+    /**
+     * 根据ID查询员工
+     * @param id
+     * @return
+     */
+    EmployeeGetOneByIdVO getOneById(Long id);
+
+    /**
+     * 修改员工信息
+     * @param employeeUpdateInfoDTO
+     * @return
+     */
+    void updateInfo(EmployeeUpdateInfoDTO employeeUpdateInfoDTO);
 }

@@ -3,8 +3,11 @@ package com.hongs.skyserver.controller.admin;
 import com.hongs.skycommon.pojo.dto.EmployeeDTO;
 import com.hongs.skycommon.pojo.dto.EmployeeLoginDTO;
 import com.hongs.skycommon.pojo.dto.EmployeePageQueryDTO;
+import com.hongs.skycommon.pojo.dto.EmployeeUpdateInfoDTO;
 import com.hongs.skycommon.pojo.entity.Employee;
+import com.hongs.skycommon.pojo.vo.EmployeeGetOneByIdVO;
 import com.hongs.skycommon.pojo.vo.EmployeeLoginVO;
+import com.hongs.skycommon.pojo.vo.EmployeePageQueryVO;
 import com.hongs.skycommon.result.PageResult;
 import com.hongs.skycommon.result.Result;
 import com.hongs.skyserver.service.EmployeeService;
@@ -12,6 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,9 +76,9 @@ public class EmployeeController {
      */
     @Operation(summary = "员工分页查询")
     @GetMapping("/page")
-    public Result<PageResult> page(@ParameterObject EmployeePageQueryDTO pageQueryDTO) {
+    public Result<PageResult<EmployeePageQueryVO>> page(@ParameterObject EmployeePageQueryDTO pageQueryDTO) {
         log.info("员工分页查询: {}", pageQueryDTO);
-        PageResult pageResult = employeeService.page(pageQueryDTO);
+        PageResult<EmployeePageQueryVO> pageResult = employeeService.page(pageQueryDTO);
         return Result.success(pageResult);
     }
 
@@ -88,7 +92,33 @@ public class EmployeeController {
     @PostMapping("/status/{status}")
     public Result updateStatus(@PathVariable Integer status, Long id) {
         log.info("启用禁用员工账号: {}, {}", status, id);
-        employeeService.update(Employee.builder().id(id).status(status).build());
+        employeeService.updateStatus(status, id);
+        return Result.success();
+    }
+
+    /**
+     * 根据ID查询员工
+     * @param id
+     * @return
+     */
+    @Operation(summary = "根据ID查询员工")
+    @GetMapping("/{id}")
+    public Result<EmployeeGetOneByIdVO> getOneById(@PathVariable Long id) {
+        log.info("根据ID查询员工: {}", id);
+        EmployeeGetOneByIdVO employeeGetOneByIdVO = employeeService.getOneById(id);
+        return Result.success(employeeGetOneByIdVO);
+    }
+
+    /**
+     * 修改员工信息
+     * @param employeeUpdateInfoDTO
+     * @return
+     */
+    @Operation(summary = "修改员工信息")
+    @PutMapping
+    public Result updateInfo(@RequestBody EmployeeUpdateInfoDTO employeeUpdateInfoDTO) {
+        log.info("修改员工信息: {}", employeeUpdateInfoDTO);
+        employeeService.updateInfo(employeeUpdateInfoDTO);
         return Result.success();
     }
 }

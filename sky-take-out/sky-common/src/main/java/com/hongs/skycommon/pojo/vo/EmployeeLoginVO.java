@@ -18,7 +18,7 @@ public class EmployeeLoginVO implements Serializable {
     private Long id;
 
     @Schema(description = "用户名")
-    private String userName;
+    private String username;
 
     @Schema(description = "姓名")
     private String name;

@@ -16,7 +16,9 @@ import com.hongs.skycommon.exception.PasswordErrorException;
 import com.hongs.skycommon.pojo.dto.EmployeeDTO;
 import com.hongs.skycommon.pojo.dto.EmployeeLoginDTO;
 import com.hongs.skycommon.pojo.dto.EmployeePageQueryDTO;
+import com.hongs.skycommon.pojo.dto.EmployeeUpdateInfoDTO;
 import com.hongs.skycommon.pojo.entity.Employee;
+import com.hongs.skycommon.pojo.vo.EmployeeGetOneByIdVO;
 import com.hongs.skycommon.pojo.vo.EmployeeLoginVO;
 import com.hongs.skycommon.pojo.vo.EmployeePageQueryVO;
 import com.hongs.skycommon.properties.JwtProperties;
@@ -81,7 +83,7 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder()
                 .id(employee.getId())
-                .userName(employee.getUsername())
+                .username(employee.getUsername())
                 .name(employee.getName())
                 .token(token)
                 .build();
@@ -118,16 +120,16 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
     /**
      * 员工分页查询
-     * @param pageQueryDTO
+     * @param employeePageQueryDTO
      * @return
      */
     @Override
-    public PageResult<EmployeePageQueryVO> page(EmployeePageQueryDTO pageQueryDTO) {
-        IPage<Employee> iPage = new Page(pageQueryDTO.getPage(), pageQueryDTO.getPageSize());
+    public PageResult<EmployeePageQueryVO> page(EmployeePageQueryDTO employeePageQueryDTO) {
+        IPage<Employee> iPage = new Page(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
         wrapper.orderByDesc(Employee::getUpdateTime)
                 .orderByDesc(Employee::getCreateTime);
-        wrapper.like(StringUtils.hasText(pageQueryDTO.getName()), Employee::getName, pageQueryDTO.getName());
+        wrapper.like(StringUtils.hasText(employeePageQueryDTO.getName()), Employee::getName, employeePageQueryDTO.getName());
         this.page(iPage, wrapper);
 
         List<EmployeePageQueryVO> employeePageQueryVOList = iPage.getRecords().stream().map(employee -> {
@@ -157,5 +159,47 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
                 .set(employee.getUpdateUser() != null, Employee::getUpdateUser, employee.getUpdateUser())
                 .set(employee.getStatus() != null, Employee::getStatus, employee.getStatus());
         this.update(wrapper);
+    }
+
+    /**
+     * 启用禁用员工账号
+     * @param status
+     * @param id
+     * @return
+     */
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+        this.update(employee);
+    }
+
+    /**
+     * 根据ID查询员工
+     * @param id
+     * @return
+     */
+    @Override
+    public EmployeeGetOneByIdVO getOneById(Long id) {
+        Employee employee = this.getById(id);
+        EmployeeGetOneByIdVO employeeGetOneByIdVO = new EmployeeGetOneByIdVO();
+        BeanUtils.copyProperties(employee, employeeGetOneByIdVO);
+        return employeeGetOneByIdVO;
+    }
+
+    /**
+     * 修改员工信息
+     * @param employeeUpdateInfoDTO
+     * @return
+     */
+    @Override
+    public void updateInfo(EmployeeUpdateInfoDTO employeeUpdateInfoDTO) {
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeUpdateInfoDTO, employee);
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employee.setUpdateTime(LocalDateTime.now());
+        this.update(employee);
     }
 }
