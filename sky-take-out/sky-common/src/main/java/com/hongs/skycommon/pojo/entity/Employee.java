@@ -6,7 +6,11 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 员工信息
@@ -14,6 +18,9 @@ import lombok.Data;
  */
 @TableName(value ="employee")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Employee implements Serializable {
     /**
      * 主键

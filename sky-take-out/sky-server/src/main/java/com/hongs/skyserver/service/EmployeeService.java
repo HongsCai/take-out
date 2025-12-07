@@ -35,4 +35,10 @@ public interface EmployeeService extends IService<Employee> {
      * @return
      */
     PageResult<EmployeePageQueryVO> page(EmployeePageQueryDTO pageQueryDTO);
+
+    /**
+     * 通用员工信息更新
+     * @param employee
+     */
+    void update(Employee employee);
 }

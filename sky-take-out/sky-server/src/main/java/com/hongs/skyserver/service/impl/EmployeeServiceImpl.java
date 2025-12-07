@@ -1,6 +1,7 @@
 package com.hongs.skyserver.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -137,8 +138,24 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
         return new PageResult<EmployeePageQueryVO>(iPage.getTotal(), employeePageQueryVOList);
     }
+
+    /**
+     * 通用员工更新
+     * @param employee
+     */
+    @Override
+    public void update(Employee employee) {
+        LambdaUpdateWrapper<Employee> wrapper = new LambdaUpdateWrapper<>();
+        wrapper.eq(Employee::getId, employee.getId())
+                .set(employee.getName() != null, Employee::getName, employee.getName())
+                .set(employee.getUsername() != null, Employee::getUsername, employee.getUsername())
+                .set(employee.getPassword() != null, Employee::getPassword, employee.getPassword())
+                .set(employee.getPhone() != null, Employee::getPhone, employee.getPhone())
+                .set(employee.getSex() != null, Employee::getSex, employee.getSex())
+                .set(employee.getIdNumber() != null, Employee::getIdNumber, employee.getIdNumber())
+                .set(employee.getUpdateTime() != null, Employee::getUpdateTime, employee.getUpdateTime())
+                .set(employee.getUpdateUser() != null, Employee::getUpdateUser, employee.getUpdateUser())
+                .set(employee.getStatus() != null, Employee::getStatus, employee.getStatus());
+        this.update(wrapper);
+    }
 }
-
-
-
-

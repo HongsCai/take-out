@@ -3,6 +3,7 @@ package com.hongs.skyserver.controller.admin;
 import com.hongs.skycommon.pojo.dto.EmployeeDTO;
 import com.hongs.skycommon.pojo.dto.EmployeeLoginDTO;
 import com.hongs.skycommon.pojo.dto.EmployeePageQueryDTO;
+import com.hongs.skycommon.pojo.entity.Employee;
 import com.hongs.skycommon.pojo.vo.EmployeeLoginVO;
 import com.hongs.skycommon.result.PageResult;
 import com.hongs.skycommon.result.Result;
@@ -75,5 +76,19 @@ public class EmployeeController {
         log.info("员工分页查询: {}", pageQueryDTO);
         PageResult pageResult = employeeService.page(pageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    /**
+     * 启用禁用员工账号
+     * @param status
+     * @param id
+     * @return
+     */
+    @Operation(summary = "启用禁用员工账号")
+    @PostMapping("/status/{status}")
+    public Result updateStatus(@PathVariable Integer status, Long id) {
+        log.info("启用禁用员工账号: {}, {}", status, id);
+        employeeService.update(Employee.builder().id(id).status(status).build());
+        return Result.success();
     }
 }
