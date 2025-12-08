@@ -1,7 +1,6 @@
 package com.hongs.skyserver.controller.admin;
 
 import com.hongs.skycommon.pojo.dto.*;
-import com.hongs.skycommon.pojo.entity.Employee;
 import com.hongs.skycommon.pojo.vo.EmployeeGetOneByIdVO;
 import com.hongs.skycommon.pojo.vo.EmployeeLoginVO;
 import com.hongs.skycommon.pojo.vo.EmployeePageQueryVO;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -56,14 +54,14 @@ public class EmployeeController {
     /**
      * 新增员工
      *
-     * @param employeeDTO
+     * @param employeeSaveDTO
      * @return
      */
     @Operation(summary = "新增员工")
     @PostMapping
-    public Result save(@RequestBody EmployeeDTO employeeDTO) {
-        log.info("新增员工: {}", employeeDTO);
-        employeeService.save(employeeDTO);
+    public Result save(@RequestBody EmployeeSaveDTO employeeSaveDTO) {
+        log.info("新增员工: {}", employeeSaveDTO);
+        employeeService.save(employeeSaveDTO);
         return Result.success();
     }
 

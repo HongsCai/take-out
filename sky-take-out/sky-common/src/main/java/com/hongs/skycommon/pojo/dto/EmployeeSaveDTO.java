@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Data
 @Schema(description = "新增员工DTO")
-public class EmployeeDTO implements Serializable {
+public class EmployeeSaveDTO implements Serializable {
 
     @Schema(description = "ID")
     private Long id;

@@ -23,10 +23,10 @@ public interface EmployeeService extends IService<Employee> {
 
     /**
      * 新增员工
-     * @param employeeDTO
+     * @param employeeSaveDTO
      * @return
      */
-    void save(EmployeeDTO employeeDTO);
+    void save(EmployeeSaveDTO employeeSaveDTO);
 
     /**
      * 员工分页查询

@@ -91,28 +91,32 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
 
     /**
      * 新增员工
-     * @param employeeDTO
+     * @param employeeSaveDTO
      * @return
      */
     @Override
-    public void save(EmployeeDTO employeeDTO) {
-        Employee employee = new Employee();
-        BeanUtils.copyProperties(employeeDTO, employee);
-
-        // 设置账号状态
-        employee.setStatus(StatusConstant.ENABLE);
-
-        // 设置密码为默认密码
-        employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()));
-
-        // 设置创建时间和修改时间
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
-
-        // 设置为当前创建人id和修改人的id
-        employee.setCreateUser(BaseContext.getCurrentId());
-        employee.setUpdateUser(BaseContext.getCurrentId());
-
+    public void save(EmployeeSaveDTO employeeSaveDTO) {
+        /**
+         * 拷贝DTO属性
+         * 设置账号状态
+         * 设置密码为默认密码
+         * 设置创建时间和修改时间
+         * 设置为当前创建人id和修改人的id
+         */
+        Employee employee = Employee.builder()
+                .id(employeeSaveDTO.getId())
+                .username(employeeSaveDTO.getUsername())
+                .name(employeeSaveDTO.getName())
+                .sex(employeeSaveDTO.getSex())
+                .idNumber(employeeSaveDTO.getIdNumber())
+                .phone(employeeSaveDTO.getPhone())
+                .status(StatusConstant.ENABLE)
+                .password(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()))
+                .createTime(LocalDateTime.now())
+                .updateTime(LocalDateTime.now())
+                .createUser(BaseContext.getCurrentId())
+                .updateUser(BaseContext.getCurrentId())
+                .build();
         this.save(employee);
     }
 
@@ -125,9 +129,9 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee>
     public PageResult<EmployeePageQueryVO> page(EmployeePageQueryDTO employeePageQueryDTO) {
         IPage<Employee> iPage = new Page(employeePageQueryDTO.getPage(), employeePageQueryDTO.getPageSize());
         LambdaQueryWrapper<Employee> wrapper = new LambdaQueryWrapper<>();
-        wrapper.orderByDesc(Employee::getUpdateTime)
+        wrapper.like(StringUtils.hasText(employeePageQueryDTO.getName()), Employee::getName, employeePageQueryDTO.getName())
+                .orderByDesc(Employee::getUpdateTime)
                 .orderByDesc(Employee::getCreateTime);
-        wrapper.like(StringUtils.hasText(employeePageQueryDTO.getName()), Employee::getName, employeePageQueryDTO.getName());
         this.page(iPage, wrapper);
 
         List<EmployeePageQueryVO> employeePageQueryVOList = iPage.getRecords().stream().map(employee -> {
