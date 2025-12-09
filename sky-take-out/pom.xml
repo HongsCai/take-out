@@ -25,14 +25,17 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
         <lombok>1.18.20</lombok>
-        <mybatis.plus.spring>3.5.14</mybatis.plus.spring>
-        <mysql.connector.java>8.0.30</mysql.connector.java>
-        <druid.spring.boot.starter>1.2.23</druid.spring.boot.starter>
+        <mybatis-plus-spring>3.5.14</mybatis-plus-spring>
+        <mysql-connector-java>8.0.30</mysql-connector-java>
+        <druid-spring-boot-starter>1.2.23</druid-spring-boot-starter>
         <fastjson>1.2.76</fastjson>
         <commons.lang>2.6</commons.lang>
         <knife4j>4.5.0</knife4j>
         <jjwt>0.9.1</jjwt>
         <jaxb-api>2.3.1</jaxb-api>
+        <aliyun-sdk-oss>3.17.4</aliyun-sdk-oss>
+        <activation>1.1.1</activation>
+        <jaxb-runtime>2.3.3</jaxb-runtime>
         <poi>3.16</poi>
     </properties>
 
@@ -47,25 +50,25 @@
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-spring-boot3-starter</artifactId>
-                <version>${mybatis.plus.spring}</version>
+                <version>${mybatis-plus-spring}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-jsqlparser</artifactId>
-                <version>${mybatis.plus.spring}</version>
+                <version>${mybatis-plus-spring}</version>
             </dependency>
 
             <dependency>
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
-                <version>${mysql.connector.java}</version>
+                <version>${mysql-connector-java}</version>
             </dependency>
 
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid.spring.boot.starter}</version>
+                <version>${druid-spring-boot-starter}</version>
             </dependency>
 
             <dependency>
@@ -86,12 +89,27 @@
                 <version>${jjwt}</version>
             </dependency>
 
-
-
+            <!-- 阿里云OSS -->
+            <dependency>
+                <groupId>com.aliyun.oss</groupId>
+                <artifactId>aliyun-sdk-oss</artifactId>
+                <version>${aliyun-sdk-oss}</version>
+            </dependency>
             <dependency>
                 <groupId>javax.xml.bind</groupId>
                 <artifactId>jaxb-api</artifactId>
                 <version>${jaxb-api}</version>
+            </dependency>
+            <dependency>
+                <groupId>javax.activation</groupId>
+                <artifactId>activation</artifactId>
+                <version>${activation}</version>
+            </dependency>
+            <!-- no more than 2.3.3-->
+            <dependency>
+                <groupId>org.glassfish.jaxb</groupId>
+                <artifactId>jaxb-runtime</artifactId>
+                <version>${jaxb-runtime}</version>
             </dependency>
 
             <!-- poi -->

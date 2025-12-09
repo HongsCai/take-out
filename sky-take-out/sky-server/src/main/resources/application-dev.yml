@@ -1,4 +1,4 @@
-sky:
+hongs:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
@@ -6,3 +6,9 @@ sky:
     host: localhost
     port: 3306
     database: sky_take_out
+  alioss:
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: ${OSS_ACCESS_KEY_ID}
+    access-key-secret: ${OSS_ACCESS_KEY_SECRET}
+    bucket-name: hongs-cai-java-sky-take-out
+    region: cn-beijing

@@ -6,6 +6,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * Jwt工具类
+ */
 public class JwtUtil {
     /**
      *

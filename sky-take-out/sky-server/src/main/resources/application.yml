@@ -8,10 +8,10 @@ spring:
     active: dev
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: ${sky.datasource.driver-class-name}
-    url: jdbc:mysql://${sky.datasource.host}:${sky.datasource.port}/${sky.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
-    username: ${sky.datasource.username}
-    password: ${sky.datasource.password}
+    driver-class-name: ${hongs.datasource.driver-class-name}
+    url: jdbc:mysql://${hongs.datasource.host}:${hongs.datasource.port}/${hongs.datasource.database}?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${hongs.datasource.username}
+    password: ${hongs.datasource.password}
 
 springdoc:
   api-docs:
@@ -42,3 +42,10 @@ sky:
     admin-ttl: 720000000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+
+  alioss:
+    access-key-id: ${hongs.alioss.access-key-id}
+    access-key-secret: ${hongs.alioss.access-key-secret}
+    endpoint: ${hongs.alioss.endpoint}
+    bucket-name: ${hongs.alioss.bucket-name}
+    region: ${hongs.alioss.region}
