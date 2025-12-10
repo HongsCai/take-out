@@ -36,7 +36,7 @@ public class CommonController {
      * @return
      */
     @Operation(summary = "文件上传")
-    @PostMapping("/update")
+    @PostMapping("/upload")
     public Result<String> update(MultipartFile file) {
         log.info("文件上传");
         try {
