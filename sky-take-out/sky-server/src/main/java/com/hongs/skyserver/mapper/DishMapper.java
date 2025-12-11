@@ -1,7 +1,11 @@
 package com.hongs.skyserver.mapper;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.hongs.skycommon.pojo.dto.DishPageQueryDTO;
 import com.hongs.skycommon.pojo.entity.Dish;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.hongs.skycommon.pojo.vo.DishPageQueryVO;
+
 
 /**
 * @author Hongs
@@ -10,6 +14,14 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com/hongs/skyserver.pojo.Dish
 */
 public interface DishMapper extends BaseMapper<Dish> {
+
+    /**
+     * 菜品分页查询
+     * @param page
+     * @param dishPageQueryDTO
+     * @return
+     */
+    Page<DishPageQueryVO> pageQuery(Page<DishPageQueryVO> page, DishPageQueryDTO dishPageQueryDTO);
 
 }
 

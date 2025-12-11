@@ -1,8 +1,11 @@
 package com.hongs.skyserver.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.hongs.skycommon.pojo.dto.DishPageQueryDTO;
 import com.hongs.skycommon.pojo.dto.DishSaveDTO;
 import com.hongs.skycommon.pojo.entity.Dish;
+import com.hongs.skycommon.pojo.vo.DishPageQueryVO;
+import com.hongs.skycommon.result.PageResult;
 
 /**
 * @author Hongs
@@ -17,4 +20,10 @@ public interface DishService extends IService<Dish> {
      */
     void saveWithFlavor(DishSaveDTO dishSaveDTO);
 
+    /**
+     * 菜品分页查询
+     * @param dishPageQueryDTO
+     * @return
+     */
+    PageResult<DishPageQueryVO> page(DishPageQueryDTO dishPageQueryDTO);
 }

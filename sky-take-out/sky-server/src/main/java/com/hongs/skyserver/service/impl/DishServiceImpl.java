@@ -1,9 +1,13 @@
 package com.hongs.skyserver.service.impl;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hongs.skycommon.pojo.dto.DishPageQueryDTO;
 import com.hongs.skycommon.pojo.dto.DishSaveDTO;
 import com.hongs.skycommon.pojo.entity.Dish;
 import com.hongs.skycommon.pojo.entity.DishFlavor;
+import com.hongs.skycommon.pojo.vo.DishPageQueryVO;
+import com.hongs.skycommon.result.PageResult;
 import com.hongs.skyserver.mapper.DishMapper;
 import com.hongs.skyserver.service.DishFlavorService;
 import com.hongs.skyserver.service.DishService;
@@ -44,6 +48,18 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
             dishFlavors.forEach(dishFlavor -> dishFlavor.setDishId(dish.getId()));
             dishFlavorService.saveBatch(dishFlavors);
         }
+    }
+
+    /**
+     * 菜品分页查询
+     * @param dishPageQueryDTO
+     * @return
+     */
+    @Override
+    public PageResult<DishPageQueryVO> page(DishPageQueryDTO dishPageQueryDTO) {
+        Page<DishPageQueryVO> page = new Page<>(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
+        this.baseMapper.pageQuery(page, dishPageQueryDTO);
+        return new PageResult<>(page.getTotal(), page.getRecords());
     }
 }
 
