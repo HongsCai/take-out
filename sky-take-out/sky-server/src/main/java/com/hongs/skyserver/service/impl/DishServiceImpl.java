@@ -1,16 +1,22 @@
 package com.hongs.skyserver.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.hongs.skycommon.constant.MessageConstant;
+import com.hongs.skycommon.constant.StatusConstant;
+import com.hongs.skycommon.exception.BaseException;
 import com.hongs.skycommon.pojo.dto.DishPageQueryDTO;
 import com.hongs.skycommon.pojo.dto.DishSaveDTO;
 import com.hongs.skycommon.pojo.entity.Dish;
 import com.hongs.skycommon.pojo.entity.DishFlavor;
+import com.hongs.skycommon.pojo.entity.SetmealDish;
 import com.hongs.skycommon.pojo.vo.DishPageQueryVO;
 import com.hongs.skycommon.result.PageResult;
 import com.hongs.skyserver.mapper.DishMapper;
 import com.hongs.skyserver.service.DishFlavorService;
 import com.hongs.skyserver.service.DishService;
+import com.hongs.skyserver.service.SetmealDishService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +35,9 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 
     @Autowired
     private DishFlavorService dishFlavorService;
+
+    @Autowired
+    private SetmealDishService setmealDishService;
 
     /**
      * 保存菜品
@@ -60,6 +69,28 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         Page<DishPageQueryVO> page = new Page<>(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
         this.baseMapper.pageQuery(page, dishPageQueryDTO);
         return new PageResult<>(page.getTotal(), page.getRecords());
+    }
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    @Override
+    @Transactional
+    public void deleteBatchByIds(List<Long> ids) {
+        // 判断当前菜品是否在售中
+        if (this.count(new LambdaQueryWrapper<Dish>().in(Dish::getId, ids).eq(Dish::getStatus, StatusConstant.ENABLE)) > 0) {
+            throw new BaseException(MessageConstant.DISH_ON_SALE);
+        }
+        // 判断当前菜品是否被套餐关联
+        if (setmealDishService.count(new LambdaQueryWrapper<SetmealDish>().in(SetmealDish::getDishId, ids)) > 0) {
+            throw new BaseException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
+
+        // 删除菜品口味表中的数据
+        dishFlavorService.remove(new LambdaQueryWrapper<DishFlavor>().in(DishFlavor::getDishId, ids));
+        // 删除菜品表中的数据
+        this.removeByIds(ids);
     }
 }
 

@@ -64,13 +64,13 @@
             <option name="needSerializable" value="true" />
             <option name="needsComment" value="true" />
             <option name="needsModel" value="true" />
-            <option name="relativePackage" value="pojo.entity" />
+            <option name="relativePackage" value="entity" />
             <option name="superClass" value="" />
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="DishFlavor" />
-                  <option name="tableName" value="dish_flavor" />
+                  <option name="className" value="SetmealDish" />
+                  <option name="tableName" value="setmeal_dish" />
                 </TableUIInfo>
               </list>
             </option>

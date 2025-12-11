@@ -7,6 +7,8 @@ import com.hongs.skycommon.pojo.entity.Dish;
 import com.hongs.skycommon.pojo.vo.DishPageQueryVO;
 import com.hongs.skycommon.result.PageResult;
 
+import java.util.List;
+
 /**
 * @author Hongs
 * @description 针对表【dish(菜品)】的数据库操作Service
@@ -26,4 +28,10 @@ public interface DishService extends IService<Dish> {
      * @return
      */
     PageResult<DishPageQueryVO> page(DishPageQueryDTO dishPageQueryDTO);
+
+    /**
+     * 批量删除
+     * @param ids
+     */
+    void deleteBatchByIds(List<Long> ids);
 }

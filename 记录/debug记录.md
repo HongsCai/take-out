@@ -234,3 +234,115 @@ public class AutoFillConstant {
 }
 ```
 
+
+
+# 2025年12月11日
+
+## xml配置文件中SQL语法错误
+
+```sql
+select d.id, d.name, d.category_id, d.price, d.image, d.description,
+    d.status, d.update_time, c.name as c.category_name
+...
+```
+
+`c.name as c.category_name` 中 `AS` 后面的别名（Alias）就是一个纯粹的名字，**不能包含点号（`.`）**。
+
+
+
+## xml配置文件中未找到绑定属性
+
+```shell
+### Error querying database.  Cause: org.apache.ibatis.binding.BindingException: Parameter 'name' not found. Available parameters are [page, dishPageQueryDTO, param1, param2]
+### Cause: org.apache.ibatis.binding.BindingException: Parameter 'name' not found. Available parameters are [page, dishPageQueryDTO, param1, param2]] with root cause
+```
+
+
+
+修改前：
+
+```xml
+<select id="pageQuery" resultType="com.hongs.skycommon.pojo.vo.DishPageQueryVO">
+    select d.id, d.name, d.category_id, d.price, d.image, d.description,
+    d.status, d.update_time, c.name as category_name
+    from dish d
+    left join category c on d.category_id = c.id
+    <where>
+        <if test="name != null and name != ''">
+            and d.name like concat('%', #{name}, '%')
+        </if>
+        <if test="categoryId != null">
+            and d.category_id = #{categoryId}
+        </if>
+        <if test="status != null">
+            and d.status = #{status}
+        </if>
+    </where>
+</select>
+```
+
+> 传入的是dto，而非几个单一属性
+
+
+
+修改后：
+
+```xml
+    <select id="pageQuery" resultType="com.hongs.skycommon.pojo.vo.DishPageQueryVO">
+        select d.id, d.name, d.category_id, d.price, d.image, d.description,
+        d.status, d.update_time, c.name as category_name
+        from dish d
+        left join category c on d.category_id = c.id
+        <where>
+            <if test="dishPageQueryDTO.name != null and dishPageQueryDTO.name != ''">
+                and d.name like concat('%', #{dishPageQueryDTO.name}, '%')
+            </if>
+            <if test="dishPageQueryDTO.categoryId != null">
+                and d.category_id = #{dishPageQueryDTO.categoryId}
+            </if>
+            <if test="dishPageQueryDTO.status != null">
+                and d.status = #{dishPageQueryDTO.status}
+            </if>
+        </where>
+    </select>
+```
+
+
+
+还可以起别名，在mapper文件中设置 `@Param("别名")`
+
+> <font color='red'>注意该注解的import应该来自ibatis</font>
+
+```java
+public interface DishMapper extends BaseMapper<Dish> {
+
+    /**
+     * 菜品分页查询
+     * @param page
+     * @param dishPageQueryDTO
+     * @return
+     */
+    Page<DishPageQueryVO> pageQuery(Page<DishPageQueryVO> page, @Param("dto") DishPageQueryDTO dishPageQueryDTO);
+
+}
+```
+
+```xml
+<select id="pageQuery" resultType="com.hongs.skycommon.pojo.vo.DishPageQueryVO">
+    select d.id, d.name, d.category_id, d.price, d.image, d.description,
+    d.status, d.update_time, c.name as category_name
+    from dish d
+    left join category c on d.category_id = c.id
+    <where>
+        <if test="dto.name != null and dto.name != ''">
+            and d.name like concat('%', #{dto.name}, '%')
+        </if>
+        <if test="dto.categoryId != null">
+            and d.category_id = #{dto.categoryId}
+        </if>
+        <if test="dto.status != null">
+            and d.status = #{dto.status}
+        </if>
+    </where>
+</select>
+```
