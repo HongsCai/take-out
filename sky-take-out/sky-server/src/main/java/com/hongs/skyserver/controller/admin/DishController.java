@@ -4,7 +4,6 @@ package com.hongs.skyserver.controller.admin;
 import com.hongs.skycommon.pojo.dto.DishSaveDTO;
 import com.hongs.skycommon.result.Result;
 import com.hongs.skyserver.service.DishService;
-import com.hongs.skyserver.service.impl.DishServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
