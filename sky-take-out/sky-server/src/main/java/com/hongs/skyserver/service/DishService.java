@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.hongs.skycommon.pojo.dto.DishPageQueryDTO;
 import com.hongs.skycommon.pojo.dto.DishSaveDTO;
 import com.hongs.skycommon.pojo.entity.Dish;
+import com.hongs.skycommon.pojo.vo.DishGetOneByIdVO;
 import com.hongs.skycommon.pojo.vo.DishPageQueryVO;
 import com.hongs.skycommon.result.PageResult;
 
@@ -34,4 +35,24 @@ public interface DishService extends IService<Dish> {
      * @param ids
      */
     void deleteBatchByIds(List<Long> ids);
+
+    /**
+     * 根据id查询菜品
+     * @param id
+     * @return
+     */
+    DishGetOneByIdVO getOneById(Long id);
+
+    /**
+     * 根据分类的id查询菜品
+     * @param categoryId
+     * @return
+     */
+    List<Dish> listByCategoryId(Long categoryId);
+
+    /**
+     * 修改菜品
+     * @param dishSaveDTO
+     */
+    void updateWithFlavor(DishSaveDTO dishSaveDTO);
 }

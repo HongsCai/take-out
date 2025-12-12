@@ -11,6 +11,7 @@ import com.hongs.skycommon.pojo.dto.DishSaveDTO;
 import com.hongs.skycommon.pojo.entity.Dish;
 import com.hongs.skycommon.pojo.entity.DishFlavor;
 import com.hongs.skycommon.pojo.entity.SetmealDish;
+import com.hongs.skycommon.pojo.vo.DishGetOneByIdVO;
 import com.hongs.skycommon.pojo.vo.DishPageQueryVO;
 import com.hongs.skycommon.result.PageResult;
 import com.hongs.skyserver.mapper.DishMapper;
@@ -91,6 +92,52 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         dishFlavorService.remove(new LambdaQueryWrapper<DishFlavor>().in(DishFlavor::getDishId, ids));
         // 删除菜品表中的数据
         this.removeByIds(ids);
+    }
+
+    /**
+     * 根据id查询菜品
+     * @param id
+     * @return
+     */
+    @Override
+    @Transactional
+    public DishGetOneByIdVO getOneById(Long id) {
+        DishGetOneByIdVO dishGetOneByIdVO = new DishGetOneByIdVO();
+        BeanUtils.copyProperties(this.getById(id), dishGetOneByIdVO);
+        dishGetOneByIdVO.setFlavors(dishFlavorService.list(new LambdaQueryWrapper<DishFlavor>().eq(DishFlavor::getDishId, id)));
+        return dishGetOneByIdVO;
+    }
+
+    /**
+     * 根据分类的id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @Override
+    public List<Dish> listByCategoryId(Long categoryId) {
+        LambdaQueryWrapper<Dish> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.eq(Dish::getCategoryId, categoryId);
+        return this.list(queryWrapper);
+    }
+
+    /**
+     * 修改菜品
+     * @param dishSaveDTO
+     */
+    @Transactional
+    @Override
+    public void updateWithFlavor(DishSaveDTO dishSaveDTO) {
+        Dish dish = new Dish();
+        BeanUtils.copyProperties(dishSaveDTO, dish);
+        this.updateById(dish);
+        dishFlavorService.remove(new LambdaQueryWrapper<DishFlavor>().eq(DishFlavor::getDishId, dishSaveDTO.getId()));
+
+        // 向口味表插入多条数据
+        List<DishFlavor> dishFlavors = dishSaveDTO.getFlavors();
+        if (dishFlavors != null && !dishFlavors.isEmpty()) {
+            dishFlavors.forEach(dishFlavor -> dishFlavor.setDishId(dish.getId()));
+            dishFlavorService.saveBatch(dishFlavors);
+        }
     }
 }
 

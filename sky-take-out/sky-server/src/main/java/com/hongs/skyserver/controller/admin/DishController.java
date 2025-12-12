@@ -3,6 +3,8 @@ package com.hongs.skyserver.controller.admin;
 
 import com.hongs.skycommon.pojo.dto.DishPageQueryDTO;
 import com.hongs.skycommon.pojo.dto.DishSaveDTO;
+import com.hongs.skycommon.pojo.entity.Dish;
+import com.hongs.skycommon.pojo.vo.DishGetOneByIdVO;
 import com.hongs.skycommon.pojo.vo.DishPageQueryVO;
 import com.hongs.skycommon.result.PageResult;
 import com.hongs.skycommon.result.Result;
@@ -63,6 +65,43 @@ public class DishController {
     public Result delete(@RequestParam List<Long> ids) {
         log.info("批量删除: {}", ids);
         dishService.deleteBatchByIds(ids);
+        return Result.success();
+    }
+
+    /**
+     * 根据id查询菜品
+     * @param id
+     * @return
+     */
+    @Operation(summary = "根据id查询菜品")
+    @GetMapping("/{id}")
+    public Result<DishGetOneByIdVO> getOneById(@PathVariable Long id) {
+        log.info("根据id查询菜品: {}", id);
+        return Result.success(dishService.getOneById(id));
+    }
+
+    /**
+     * 根据分类的id查询菜品
+     * @param categoryId
+     * @return
+     */
+    @Operation(summary = "根据分类的id查询菜品")
+    @GetMapping("/list")
+    public Result<List<Dish>> listByCategoryId(Long categoryId) {
+        log.info("根据分类的id查询菜品: {}", categoryId);
+        return Result.success(dishService.listByCategoryId(categoryId));
+    }
+
+    /**
+     * 修改菜品
+     * @param dishSaveDTO
+     * @return
+     */
+    @Operation(summary = "修改菜品")
+    @PutMapping
+    public Result updateWithFlavor(@RequestBody DishSaveDTO dishSaveDTO) {
+        log.info("修改菜品: {}", dishSaveDTO);
+        dishService.updateWithFlavor(dishSaveDTO);
         return Result.success();
     }
 }
