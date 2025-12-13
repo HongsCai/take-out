@@ -1,4 +1,6 @@
 package com.hongs.skyserver.service.impl;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -138,6 +140,20 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
             dishFlavors.forEach(dishFlavor -> dishFlavor.setDishId(dish.getId()));
             dishFlavorService.saveBatch(dishFlavors);
         }
+    }
+
+    /**
+     * 菜品起售停售
+     * @param status
+     * @param id
+     */
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        Dish dish = Dish.builder()
+                .id(id)
+                .status(status)
+                .build();
+        this.updateById(dish);
     }
 }
 

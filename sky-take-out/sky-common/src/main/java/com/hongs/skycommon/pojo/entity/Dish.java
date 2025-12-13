@@ -6,7 +6,11 @@ import com.baomidou.mybatisplus.annotation.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 菜品
@@ -14,6 +18,9 @@ import lombok.Data;
  */
 @TableName(value ="dish")
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Dish implements Serializable {
     /**
      * 主键

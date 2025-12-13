@@ -55,4 +55,11 @@ public interface DishService extends IService<Dish> {
      * @param dishSaveDTO
      */
     void updateWithFlavor(DishSaveDTO dishSaveDTO);
+
+    /**
+     * 菜品起售停售
+     * @param status
+     * @param id
+     */
+    void updateStatus(Integer status, Long id);
 }
